@@ -75,6 +75,13 @@ PERSONAS: dict[str, Persona] = {
         accent="ZH",
         gender="female",
     ),
+    "narrator": Persona(
+        id="narrator",
+        description="Deep, mysterious storyteller voice for documentaries",
+        voice_ids={"edge-tts": "en-US-ChristopherNeural", "kittentts": "expr-voice-2-m"},
+        accent="US",
+        gender="male",
+    ),
 }
 
 # Accent → list of persona ids that match

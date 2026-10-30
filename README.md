@@ -46,6 +46,7 @@ talkaty batch scripts/ out/
 | nigerian narrator | Nigerian English storytelling voice | NG |
 | french narrator | French storytelling voice | FR |
 | chinese narrator | Mandarin Chinese storytelling voice | ZH |
+| narrator | Deep, mysterious storyteller for documentaries | US |
 
 ## Backends
 

@@ -46,6 +46,7 @@ def test_parse_brief_accent():
         ("Use a French accent.", "FR"),
         ("Read in Chinese.", "ZH"),
         ("Mandarin Chinese voice please.", "ZH"),
+        ("Deep mystery documentary narrator voice.", None),
         ("No accent mentioned here.", None),
     ]
     for text, expected in cases:
