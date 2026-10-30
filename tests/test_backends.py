@@ -5,11 +5,12 @@ from talkaty.voices import PERSONAS, resolve_persona
 
 
 def test_personas_non_empty():
-    assert len(PERSONAS) == 9
+    assert len(PERSONAS) == 10
     assert "smooth female" in PERSONAS
     assert "alpha male" in PERSONAS
     assert "nigerian narrator" in PERSONAS
     assert "french narrator" in PERSONAS
+    assert "deep french narrator" in PERSONAS
     assert "chinese narrator" in PERSONAS
     assert "narrator" in PERSONAS
 

@@ -47,6 +47,7 @@ talkaty batch scripts/ out/
 | french narrator | French storytelling voice | FR |
 | chinese narrator | Mandarin Chinese storytelling voice | ZH |
 | narrator | Deep, mysterious storyteller for documentaries | US |
+| deep french narrator | Deep, mysterious French storyteller for documentaries | FR |
 
 ## Backends
 

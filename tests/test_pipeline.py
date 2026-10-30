@@ -62,6 +62,14 @@ def test_pipeline_explicit_narrator_voice():
     assert result.voice_used == "narrator", f"expected narrator, got {result.voice_used}"
 
 
+def test_pipeline_explicit_deep_french_narrator_voice():
+    """Explicit --voice 'deep french narrator' selects the deep French narrator."""
+    result = asyncio.run(_run_brief(None, voice="deep french narrator"))
+    assert result.voice_used == "deep french narrator", (
+        f"expected deep french narrator, got {result.voice_used}"
+    )
+
+
 def test_pipeline_explicit_accent_wins_over_brief():
     """Explicit --accent overrides brief hint."""
     result = asyncio.run(_run_brief("Use a Nigerian accent.", accent="UK"))
