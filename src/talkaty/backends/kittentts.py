@@ -22,7 +22,7 @@ class KittenTTS(TTSBackend):
         self,
         text: str,
         voice: str,
-        pitch: float = 0.0,
+        pitch: float | str = 0.0,
         speed: float = 1.0,
     ) -> bytes:
         import io

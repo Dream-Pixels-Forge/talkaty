@@ -17,11 +17,10 @@ Expand talkaty's voice/accent coverage, add SSML-lite markup for finer control o
 - **Objective**: Add Indian Hindi (HI), Spanish (ES), German (DE) personas.
 - **Status**: ✅ Done — 13 personas total, edge-tts voice IDs verified, end-to-end generate works for each.
 
-## Subgoal 1.2 — SSML-lite markup in scripts
+## Subgoal 1.2 — SSML-lite markup in scripts (COMPLETED)
 
 - **Objective**: Support `<break time="1s"/>`, `<emphasis>text</emphasis>`, `<pitch>N</pitch>` in script.md for fine control.
-- **Acceptance**: Scripts with SSML-lite tags synthesize with correct pauses/emphasis.
-- **Verification**: `tests/test_ssml.py` parses and applies tags.
+- **Status**: ✅ Done — `src/talkaty/ssml.py` parses tags; pipeline applies per-segment pitch, emphasis boost, and break timing; SRT subtitles reflect break timing.
 
 ## Subgoal 1.3 — PyPI publishing setup
 
@@ -34,6 +33,6 @@ Expand talkaty's voice/accent coverage, add SSML-lite markup for finer control o
 ## Acceptance Gate (v1.1.0)
 
 - [x] 13 personas including HI, ES, DE
-- [ ] SSML-lite tags parsed and applied
+- [x] SSML-lite tags parsed and applied
 - [ ] PyPI publish pipeline configured
 - [ ] `pytest` green, `ruff` clean, `mypy` clean

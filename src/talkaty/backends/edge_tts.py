@@ -12,15 +12,16 @@ class EdgeTTS(TTSBackend):
         self,
         text: str,
         voice: str,
-        pitch: float = 0.0,
+        pitch: float | str = 0.0,
         speed: float = 1.0,
     ) -> bytes:
         import edge_tts
 
+        pitch_str = pitch if isinstance(pitch, str) else f"{pitch:+.0f}Hz"
         communicate = edge_tts.Communicate(
             text,
             voice,
-            pitch=f"{pitch:+.0f}Hz",
+            pitch=pitch_str,
             rate=f"{(speed - 1) * 100:+.0f}%",
         )
         chunks: list[bytes] = []

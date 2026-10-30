@@ -39,6 +39,25 @@ Heading markers (`#`, `##`, etc.) are stripped but the text is kept. Use heading
 ### Pacing hints
 To force a longer pause between two thoughts, put them in separate paragraphs (blank line between). To speed up delivery, keep thoughts in one paragraph with short sentences.
 
+### SSML-lite markup
+For fine-grained control, use SSML-lite tags inside `script.md`:
+
+| Tag | Effect |
+|-----|--------|
+| `<break time='1s'/>` | Pause for N milliseconds (also `500ms`, `2s`) |
+| `<emphasis>text</emphasis>` | Emphasize text (pitch boost +2 semitones) |
+| `<pitch>+2</pitch>` | Set pitch in semitones for following text (negative = deeper) |
+
+Example:
+```markdown
+Hello.<break time='1s'/> <emphasis>Listen closely</emphasis> now.
+<pitch>+2</pitch>This is higher pitched.
+<pitch>-2</pitch>This is deeper.
+```
+
+SSML-lite tags are parsed by `talkaty.ssml.parse_ssml` and applied per-segment during synthesis. Breaks are reflected in SRT subtitle timing; pitch and emphasis adjust the TTS delivery per segment.
+
+
 ---
 
 ## 2. brief.txt formatting

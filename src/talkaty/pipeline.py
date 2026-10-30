@@ -12,6 +12,13 @@ from .script import parse_brief, parse_script
 from .voices import resolve_persona
 
 
+def _semitones_to_hz(semitones: float) -> str:
+    """Convert semitone offset to edge-tts pitch string (e.g. '+50Hz')."""
+    offset_hz = 440.0 * (2.0 ** (semitones / 12.0) - 1.0)
+    sign = "+" if offset_hz >= 0 else "-"
+    return f"{sign}{abs(offset_hz):.0f}Hz"
+
+
 @dataclass
 class GenerateOptions:
     script_path: str
@@ -53,8 +60,22 @@ async def run(opts: GenerateOptions) -> AudioResult:
     audio_parts: list[bytes] = []
     cursor_ms = 0
     for seg in segments:
+        # Break segment: no audio, just advance the clock (tracked in SRT)
+        if not seg.text.strip():
+            cursor_ms += seg.break_ms
+            continue
+
+        # Per-segment pitch: global opts.pitch + seg.pitch (SSML <pitch>)
+        seg_pitch = (opts.pitch or 0.0) + (seg.pitch or 0.0)
+        # Emphasis: slight pitch boost
+        if seg.emphasis:
+            seg_pitch += 2.0
+
         part = await backend.synthesize(
-            seg.text, persona.voice_id(opts.backend), pitch=opts.pitch, speed=opts.speed
+            seg.text,
+            persona.voice_id(opts.backend),
+            pitch=_semitones_to_hz(seg_pitch),
+            speed=opts.speed,
         )
         audio_parts.append(part)
         seg.start_ms = cursor_ms

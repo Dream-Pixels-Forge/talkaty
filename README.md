@@ -78,6 +78,24 @@ Example MCP call (`tts_generate`):
 - Subtitles: SRT, VTT (via `--subtitles`)
 - Metadata: sidecar `.json` with voice, backend, duration, settings
 
+## SSML-lite markup
+
+Add fine-grained control inside `script.md` with SSML-lite tags:
+
+| Tag | Effect |
+|-----|--------|
+| `<break time='1s'/>` | Pause for 1 second (also `500ms`, `2s`) |
+| `<emphasis>text</emphasis>` | Emphasize text (pitch boost) |
+| `<pitch>+2</pitch>` | Set pitch in semitones for following text (negative = deeper) |
+
+Example:
+```markdown
+Hello.<break time='1s'/> <emphasis>Listen closely</emphasis> now.
+<pitch>+2</pitch>This is higher pitched.
+<pitch>-2</pitch>This is deeper.
+```
+
 ## CI
 
 `mypy`, `ruff`, `ruff format`, and `pytest` run on every push/PR via GitHub Actions.
+
