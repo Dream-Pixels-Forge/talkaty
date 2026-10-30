@@ -23,3 +23,16 @@ def test_resolve_persona_by_accent():
 def test_edge_tts_voice_count():
     voices = EdgeTTS().list_voices()
     assert len(voices) >= 1
+
+
+def test_kittentts_graceful_when_missing():
+    """kittenTTS backend must degrade gracefully if kitten-tts is not installed."""
+    from talkaty.backends.kittentts import KittenTTS
+
+    # kitten-tts is not installed in this env, so construction should raise ImportError
+    try:
+        KittenTTS()
+        raised = False
+    except ImportError:
+        raised = True
+    assert raised, "KittenTTS should raise ImportError when kitten-tts is absent"

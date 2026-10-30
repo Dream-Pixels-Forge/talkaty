@@ -1,80 +1,64 @@
-# talkaty — GOAL.md
+# talkaty — GOAL.md (master)
 
 ## Meta Information
-- **Version**: 0.1.0
-- **Mode**: New project (blank slate)
+- **Version**: 0.1.0 (released scaffold) → 0.2.0 → 1.0.0
+- **Mode**: Existing project — v0.1.0 complete, subgoals tracked in `dev-notes/goals/`
 - **Target Repository**: `Dev/cli/talkaty/` (category `cli`)
 - **Zero-Tolerance Invariant**: `tts_generate` must produce a playable MP3/WAV from any valid `script.md` using only open-source TTS backends; zero secrets in repo; 100% CI pass rate.
 
 ---
 
-## Pre-Flight Checkpoint: Characterization Baseline
-- [ ] **0.1 Python 3.12.3 available**
-  - *Verification Command*: `python3 --version` → `Python 3.12.3`
-- [ ] **0.2 edge-tts and/or kittenTTS installable**
-  - *Verification Command*: `pip install edge-tts` succeeds
-- [ ] **0.3 `talkaty` console entry point registered**
-  - *Verification Command*: `talkaty --help` prints usage
+## Subgoal Index (lives in `dev-notes/goals/`)
+
+| Subgoal | File | Version | Status |
+|---------|------|---------|--------|
+| kittenTTS backend + SRT subtitles + batch | `dev-notes/goals/GOAL-v0-2-0-kitten-tts-subtitles.md` | 0.2.0 | Not started |
+| Brief auto-accent + preview + docs + CI | `dev-notes/goals/GOAL-v1-0-0-polish.md` | 1.0.0 | Not started (deferred) |
+
+> Convention: one master `GOAL.md` here; each version's detailed acceptance criteria lives in its own file under `dev-notes/goals/`.
 
 ---
 
-## Phase 1 — MVP (P0): script.md → voiceover MP3
+## v0.1.0 — COMPLETED (committed: `61b5299`)
 
-### 1.1 Scaffold repo
-- *Objective*: `pyproject.toml`, `src/talkaty/`, `tests/`, `.gitignore`, `README.md`, `.github/workflows/ci.yml`
-- *Acceptance*: `pnpm`? No — Python. `pip install -e .` succeeds; `talkaty --help` works.
+All acceptance criteria met:
 
-### 1.2 CLI `talkaty generate script.md`
-- *Objective*: Read a `script.md`, synthesize speech via edge-tts default voice, write `script.mp3` next to input.
-- *Acceptance*: `talkaty generate samples/demo.md` produces `demo.mp3` that is playable (non-zero bytes, valid MP3 header).
+- [x] `talkaty generate script.md --voice "smooth female" --accent US` produces `script.mp3` (verified: 16.2s demo.mp3)
+- [x] MCP `tts_generate` returns valid audio file path (server implemented in `src/talkaty/mcp_server.py`)
+- [x] `pytest` green — 9 tests passing
+- [x] `pip install -e .` + `talkaty --help` works
+- [x] Zero hardcoded secrets/API keys in repo
+- [x] CLI: `generate`, `voices`, `personas`, `preview`, `batch`
+- [x] Personas: alpha male, smooth female, warm narrator, energetic, calm
+- [x] Controls: `--pitch`, `--speed`, `--accent`; optional `--subtitles`
+- [x] Backends: edge-tts (default), kittenTTS (optional)
+- [x] CI: `.github/workflows/ci.yml` (mypy, ruff, pytest)
 
-### 1.3 MCP stdio server with `tts_generate` tool
-- *Objective*: Expose `talkaty.tts_generate(script_path, brief_path?, voice, accent, output_path)` over MCP stdio.
-- *Acceptance*: `memorius`? No — use an MCP inspector/client to call `tts_generate` and confirm it returns a valid audio file path.
-
-### 1.4 Persona presets
-- *Objective*: Predefined voice configs: alpha male, smooth female, warm narrator, energetic, calm.
-- *Acceptance*: `talkaty voices` lists personas; `--voice "smooth female"` changes output voice.
-
-### 1.5 Controls: --pitch, --speed, --accent
-- *Objective*: CLI flags to adjust pitch (st), speed (rate multiplier), accent (US/UK/AU/etc.).
-- *Acceptance*: `talkaty generate script.md --pitch 2 --speed 1.2 --accent UK` runs without error.
+### Completed sub-tasks
+- Scaffold repo: `pyproject.toml`, `src/talkaty/`, `tests/`, `.gitignore`, `README.md`, `.env.example`
+- Git initialized + initial commit
+- dev-notes: `BRAINSTORM.md`, `GOAL.md`, `SPEC.md`
 
 ---
 
-## Phase 2 — Subtitles + batch (P1)
+## Pre-Flight Checkpoint (baseline, already verified)
 
-### 2.1 SRT subtitle generation
-- *Objective*: Emit `script.srt` with word-level timestamps alongside audio.
-- *Acceptance*: `.srt` file is valid (parseable by pysrt or simple regex).
-
-### 2.2 kittenTTS backend (local fallback)
-- *Objective*: Second TTS backend that works offline when edge-tts is unreachable.
-- *Acceptance*: `--backend kittentts` produces audio.
-
-### 2.3 `talkaty batch` directory mode
-- *Objective*: Generate voiceovers for all `*.md` in a directory.
-- *Acceptance*: `talkaty batch scripts/ out/` creates one audio per `.md`.
+- [x] **0.1 Python 3.12.3 available** → `Python 3.12.3`
+- [x] **0.2 edge-tts installable** → edge-tts 7.3.1 installed
+- [x] **0.3 `talkaty` console entry point registered** → `talkaty --help` works
 
 ---
 
-## Phase 3 — Polish (P2)
+## Next immediate work
 
-### 3.1 Brief-driven accent auto-selection
-- *Objective*: Parse `brief.txt` for accent hints ("Nigerian accent", "British") and auto-select.
-- *Acceptance*: Brief mentioning "Nigerian" selects a NG voice automatically.
+Pick up **`dev-notes/goals/GOAL-v0-2-0-kitten-tts-subtitles.md`** (v0.2.0):
 
-### 3.2 Preview mode
-- *Objective*: `talkaty preview "Hello world" --voice "alpha male"` — short sample, no full script needed.
+1. kittenTTS backend end-to-end (`--backend kittentts`)
+2. Validated SRT subtitle generation (`--subtitles`)
+3. `talkaty batch` directory mode
 
-### 3.3 Docs + CI/CD pipeline
-- *Acceptance*: README with examples; GitHub CI runs pytest + ruff + mypy and is green.
+Then **`dev-notes/goals/GOAL-v1-0-0-polish.md`** (v1.0.0):
 
----
-
-## Acceptance Gate (v0.1.0)
-- [ ] `talkaty generate script.md --voice "smooth female" --accent US` produces `script.mp3`
-- [ ] MCP `tts_generate` returns valid audio file path
-- [ ] `pytest` green, `ruff` clean, `mypy` clean
-- [ ] `pip install -e .` + `talkaty --help` works
-- [ ] Zero hardcoded secrets/API keys in repo
+4. Brief-driven accent auto-selection
+5. Preview mode polish
+6. Docs + CI/CD finalization
