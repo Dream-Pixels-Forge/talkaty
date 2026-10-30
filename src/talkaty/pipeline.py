@@ -1,0 +1,84 @@
+"""Generation pipeline: parse → resolve voice → synthesize → write audio + subtitles."""
+
+from __future__ import annotations
+
+import os
+from dataclasses import dataclass
+
+from .audio import AudioResult, estimate_duration_ms, write_audio, write_srt
+from .backends.edge_tts import EdgeTTS
+from .script import parse_brief, parse_script
+from .voices import PERSONAS, resolve_persona
+
+
+@dataclass
+class GenerateOptions:
+    script_path: str
+    brief_path: str | None = None
+    voice: str | None = None
+    accent: str | None = None
+    backend: str = "edge-tts"
+    pitch: float = 0.0
+    speed: float = 1.0
+    output_path: str | None = None
+    subtitles: bool = False
+
+
+async def run(opts: GenerateOptions) -> AudioResult:
+    """Run the full generation pipeline."""
+    segments = parse_script(opts.script_path)
+    brief = parse_brief(opts.brief_path)
+
+    # Brief-driven accent override
+    accent = opts.accent or brief.get("accent") or opts.accent or "US"
+
+    persona = resolve_persona(opts.voice, accent, opts.backend)
+
+    backend: EdgeTTS
+    if opts.backend == "edge-tts":
+        backend = EdgeTTS()
+    else:
+        try:
+            from .backends.kittentts import KittenTTS
+
+            backend = KittenTTS()
+        except ImportError as exc:
+            raise RuntimeError(
+                f"Backend '{opts.backend}' unavailable. Install it or use edge-tts."
+            ) from exc
+
+    # Synthesize each segment and concatenate
+    audio_parts: list[bytes] = []
+    cursor_ms = 0
+    for seg in segments:
+        part = await backend.synthesize(
+            seg.text, persona.voice_id, pitch=opts.pitch, speed=opts.speed
+        )
+        audio_parts.append(part)
+        seg.start_ms = cursor_ms
+        # estimate segment duration for subtitles
+        seg.end_ms = cursor_ms + estimate_duration_ms([seg])
+        cursor_ms = seg.end_ms
+
+    audio_data = b"".join(audio_parts)
+    duration_seconds = cursor_ms / 1000.0
+
+    # Output path
+    if opts.output_path:
+        out_path = opts.output_path
+    else:
+        base = os.path.splitext(opts.script_path)[0]
+        out_path = base + ".mp3"
+
+    write_audio(out_path, audio_data, fmt="mp3")
+
+    if opts.subtitles:
+        srt_path = os.path.splitext(out_path)[0] + ".srt"
+        write_srt(srt_path, segments)
+
+    return AudioResult(
+        path=os.path.abspath(out_path),
+        duration_seconds=duration_seconds,
+        voice_used=persona.id,
+        backend_used=opts.backend,
+    )
