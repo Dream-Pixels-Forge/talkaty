@@ -43,6 +43,9 @@ def test_parse_brief_accent():
         ("The speaker has a British accent.", "UK"),
         ("Deliver in US English.", "US"),
         ("Australian accent preferred.", "AU"),
+        ("Use a French accent.", "FR"),
+        ("Read in Chinese.", "ZH"),
+        ("Mandarin Chinese voice please.", "ZH"),
         ("No accent mentioned here.", None),
     ]
     for text, expected in cases:

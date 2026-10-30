@@ -44,6 +44,8 @@ talkaty batch scripts/ out/
 | energetic | High-energy voice for ads/hype | US |
 | calm | Calm male voice for meditation/ASMR | AU |
 | nigerian narrator | Nigerian English storytelling voice | NG |
+| french narrator | French storytelling voice | FR |
+| chinese narrator | Mandarin Chinese storytelling voice | ZH |
 
 ## Backends
 

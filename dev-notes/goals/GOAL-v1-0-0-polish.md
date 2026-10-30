@@ -34,7 +34,7 @@ Polish talkaty into a stable release: brief-driven accent auto-selection, previe
 
 ## Acceptance Gate (v1.0.0)
 
-- [ ] Brief accent auto-selection works for at least NG, UK, US hints
+- [ ] Brief accent auto-selection works for at least NG, UK, US, FR, ZH hints
 - [ ] `talkaty preview` works without a script file
 - [ ] README complete with examples
 - [ ] CI green on push/PR

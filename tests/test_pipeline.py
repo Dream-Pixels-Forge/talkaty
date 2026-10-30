@@ -35,6 +35,26 @@ def test_pipeline_auto_accent_from_brief_nigerian():
     )
 
 
+def test_pipeline_auto_accent_from_brief_french():
+    """Brief mentioning 'French' auto-selects the French voice."""
+    import asyncio
+
+    result = asyncio.run(_run_brief("Use a French accent.", accent=None))
+    assert result.voice_used == "french narrator", (
+        f"expected french narrator, got {result.voice_used}"
+    )
+
+
+def test_pipeline_auto_accent_from_brief_chinese():
+    """Brief mentioning 'Chinese' auto-selects the Chinese voice."""
+    import asyncio
+
+    result = asyncio.run(_run_brief("Read in Chinese.", accent=None))
+    assert result.voice_used == "chinese narrator", (
+        f"expected chinese narrator, got {result.voice_used}"
+    )
+
+
 def test_pipeline_explicit_accent_wins_over_brief():
     """Explicit --accent overrides brief hint."""
     import asyncio
