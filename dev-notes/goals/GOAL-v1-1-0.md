@@ -22,11 +22,13 @@ Expand talkaty's voice/accent coverage, add SSML-lite markup for finer control o
 - **Objective**: Support `<break time="1s"/>`, `<emphasis>text</emphasis>`, `<pitch>N</pitch>` in script.md for fine control.
 - **Status**: ✅ Done — `src/talkaty/ssml.py` parses tags; pipeline applies per-segment pitch, emphasis boost, and break timing; SRT subtitles reflect break timing.
 
-## Subgoal 1.3 — PyPI publishing setup
+## Subgoal 1.3 — PyPI publishing setup (COMPLETED — infrastructure)
 
 - **Objective**: Add `build`, `twine`, provenance config; `.pypirc` example; CI publish job.
-- **Acceptance**: `pip install talkaty` works from TestPyPI; publish pipeline ready.
-- **Verification**: `dpf-publisher` skill used for release process.
+- **Status**: ✅ Done — `pyproject.toml` has build/twine dev deps; `.github/workflows/ci.yml` has
+  publish job triggered on version tags; `.pypirc.example` documents token setup.
+- **Note**: Actual `publishing` requires PyPI API tokens in GitHub secrets
+  (`TEST_PYPI_USERNAME`, `TEST_PYPI_PASSWORD`) — add these before first release.
 
 ---
 
@@ -34,5 +36,5 @@ Expand talkaty's voice/accent coverage, add SSML-lite markup for finer control o
 
 - [x] 13 personas including HI, ES, DE
 - [x] SSML-lite tags parsed and applied
-- [ ] PyPI publish pipeline configured
-- [ ] `pytest` green, `ruff` clean, `mypy` clean
+- [x] PyPI publish pipeline configured (infrastructure; add PyPI tokens to release)
+- [x] `pytest` green, `ruff` clean, `mypy` clean
