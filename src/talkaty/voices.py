@@ -7,45 +7,50 @@ from dataclasses import dataclass
 class Persona:
     id: str
     description: str
-    voice_id: str
+    voice_ids: dict[str, str]  # backend -> voice id
     accent: str
     gender: str
     backend: str = "edge-tts"
+
+    def voice_id(self, backend: str | None = None) -> str:
+        """Return the voice id for `backend`, falling back to default backend."""
+        b = backend or self.backend
+        return self.voice_ids.get(b, self.voice_ids[self.backend])
 
 
 PERSONAS: dict[str, Persona] = {
     "alpha male": Persona(
         id="alpha male",
         description="Bold, authoritative male voice",
-        voice_id="en-US-GuyNeural",
+        voice_ids={"edge-tts": "en-US-GuyNeural", "kittentts": "expr-voice-2-m"},
         accent="US",
         gender="male",
     ),
     "smooth female": Persona(
         id="smooth female",
         description="Warm, friendly female voice",
-        voice_id="en-US-JennyNeural",
+        voice_ids={"edge-tts": "en-US-JennyNeural", "kittentts": "expr-voice-2-f"},
         accent="US",
         gender="female",
     ),
     "warm narrator": Persona(
         id="warm narrator",
         description="Storytelling female voice",
-        voice_id="en-GB-SoniaNeural",
+        voice_ids={"edge-tts": "en-GB-SoniaNeural", "kittentts": "expr-voice-2-f"},
         accent="UK",
         gender="female",
     ),
     "energetic": Persona(
         id="energetic",
         description="High-energy voice for ads/hype",
-        voice_id="en-US-AriaNeural",
+        voice_ids={"edge-tts": "en-US-AriaNeural", "kittentts": "expr-voice-2-f"},
         accent="US",
         gender="female",
     ),
     "calm": Persona(
         id="calm",
         description="Calm male voice for meditation/ASMR",
-        voice_id="en-AU-WilliamNeural",
+        voice_ids={"edge-tts": "en-AU-WilliamNeural", "kittentts": "expr-voice-2-m"},
         accent="AU",
         gender="male",
     ),
@@ -73,4 +78,4 @@ def list_personas() -> list[Persona]:
 
 
 def list_voices(backend: str = "edge-tts") -> list[Persona]:
-    return [p for p in PERSONAS.values() if p.backend == backend]
+    return [p for p in PERSONAS.values() if backend in p.voice_ids]

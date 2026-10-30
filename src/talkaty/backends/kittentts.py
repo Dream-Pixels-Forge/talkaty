@@ -10,12 +10,12 @@ class KittenTTS(TTSBackend):
 
     def __init__(self) -> None:
         try:
-            import kitten_tts  # type: ignore
+            import kittentts  # type: ignore
 
-            self._model = kitten_tts.KittenTTS()
+            self._model = kittentts.KittenTTS()
         except ImportError as exc:  # pragma: no cover - optional dep
             raise ImportError(
-                "kitten-tts is not installed. `pip install talkaty[kittentts]`"
+                "kittentts is not installed. `pip install talkaty[kittentts]`"
             ) from exc
 
     async def synthesize(

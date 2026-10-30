@@ -65,7 +65,7 @@ def voices(
     for p in list_personas():
         if backend and p.backend != backend:
             continue
-        table.add_row(p.id, p.voice_id, p.accent, p.gender, p.description)
+        table.add_row(p.id, p.voice_id(backend), p.accent, p.gender, p.description)
     console.print(table)
 
 

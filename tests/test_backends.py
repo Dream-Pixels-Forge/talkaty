@@ -25,14 +25,16 @@ def test_edge_tts_voice_count():
     assert len(voices) >= 1
 
 
-def test_kittentts_graceful_when_missing():
-    """kittenTTS backend must degrade gracefully if kitten-tts is not installed."""
-    from talkaty.backends.kittentts import KittenTTS
-
-    # kitten-tts is not installed in this env, so construction should raise ImportError
+def test_kittentts_backend():
+    """kittenTTS backend: synthesizes when installed, raises ImportError when not."""
     try:
-        KittenTTS()
-        raised = False
+        from talkaty.backends.kittentts import KittenTTS
+
+        backend = KittenTTS()
     except ImportError:
-        raised = True
-    assert raised, "KittenTTS should raise ImportError when kitten-tts is absent"
+        # kitten-tts not installed in this env — graceful degradation confirmed
+        return
+
+    voices = backend.list_voices()
+    assert len(voices) >= 1
+    assert all(v.backend == "kittentts" for v in voices)

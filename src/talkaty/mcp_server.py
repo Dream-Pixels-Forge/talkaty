@@ -55,7 +55,7 @@ async def _call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
                 {
                     "id": p.id,
                     "description": p.description,
-                    "voice_id": p.voice_id,
+                    "voice_id": p.voice_id("edge-tts"),
                     "accent": p.accent,
                     "gender": p.gender,
                     "backend": p.backend,

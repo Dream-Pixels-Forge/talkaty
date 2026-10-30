@@ -52,7 +52,7 @@ async def run(opts: GenerateOptions) -> AudioResult:
     cursor_ms = 0
     for seg in segments:
         part = await backend.synthesize(
-            seg.text, persona.voice_id, pitch=opts.pitch, speed=opts.speed
+            seg.text, persona.voice_id(opts.backend), pitch=opts.pitch, speed=opts.speed
         )
         audio_parts.append(part)
         seg.start_ms = cursor_ms
