@@ -54,6 +54,13 @@ PERSONAS: dict[str, Persona] = {
         accent="AU",
         gender="male",
     ),
+    "nigerian narrator": Persona(
+        id="nigerian narrator",
+        description="Nigerian English storytelling voice",
+        voice_ids={"edge-tts": "en-NG-EzinneNeural", "kittentts": "expr-voice-2-f"},
+        accent="NG",
+        gender="female",
+    ),
 }
 
 # Accent → list of persona ids that match
@@ -61,6 +68,7 @@ ACCENT_MAP: dict[str, list[str]] = {
     "US": ["alpha male", "smooth female", "energetic"],
     "UK": ["warm narrator"],
     "AU": ["calm"],
+    "NG": ["nigerian narrator"],
 }
 
 

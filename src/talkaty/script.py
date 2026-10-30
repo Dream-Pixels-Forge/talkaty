@@ -56,19 +56,71 @@ def _split_sentences(text: str) -> list[str]:
     return [p for p in parts if p.strip()]
 
 
+def _normalize_accent(value: str) -> str | None:
+    """Normalize an accent string to a code (NG, UK, AU, US) or None."""
+    import re
+
+    lowered = value.lower()
+    if re.search(r"nigerian|nigeria", lowered):
+        return "NG"
+    if re.search(r"british|\buk\b", lowered) and "nigerian" not in lowered:
+        return "UK"
+    if re.search(r"australian|\bau\b", lowered):
+        return "AU"
+    if re.search(r"\bus\b|american", lowered):
+        return "US"
+    return None
+
+
+def _detect_accent(text: str) -> str | None:
+    """Detect accent from free text. Returns accent code or None."""
+    import re
+
+    lowered = text.lower()
+    patterns = {
+        "NG": [r"nigerian"],
+        "UK": [r"british", r"\buk\b"],
+        "AU": [r"australian", r"\bau\b"],
+        "US": [r"\bus\b", r"american"],
+    }
+    for accent, pats in patterns.items():
+        for pat in pats:
+            if re.search(pat, lowered):
+                return accent
+    return None
+
+
 def parse_brief(path: str | None) -> dict[str, str]:
-    """Read an optional brief file and return hints (accent, tone, ...)."""
+    """Read an optional brief file and return hints (accent, tone, ...).
+
+    Scans both ``key: value`` pairs and free text for accent hints
+    (e.g. "Nigerian accent", "British", "US English").
+    """
     if not path:
         return {}
     hints: dict[str, str] = {}
     with open(path, encoding="utf-8") as fh:
-        for line in fh:
-            line = line.strip()
-            if not line or line.startswith("#"):
-                continue
-            if ":" in line:
-                key, val = line.split(":", 1)
-                hints[key.strip().lower()] = val.strip()
-            else:
-                hints["note"] = hints.get("note", "") + " " + line
+        raw = fh.read()
+    for line in raw.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if ":" in line:
+            key, val = line.split(":", 1)
+            hints[key.strip().lower()] = val.strip()
+        else:
+            hints["note"] = hints.get("note", "") + " " + line
+    # Normalize the accent hint to a code (NG, UK, AU, US).
+    raw_accent = hints.get("accent")
+    if raw_accent:
+        normalized = _normalize_accent(raw_accent)
+        if normalized:
+            hints["accent"] = normalized
+        else:
+            hints.pop("accent", None)
+    # Scan free text for accent keywords when no usable accent key.
+    if "accent" not in hints:
+        detected = _detect_accent(raw)
+        if detected:
+            hints["accent"] = detected
     return hints

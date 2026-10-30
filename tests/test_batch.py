@@ -10,7 +10,10 @@ from talkaty.cli import app
 
 def test_batch_creates_one_output_per_input():
     runner = CliRunner()
-    with tempfile.TemporaryDirectory() as src_dir, tempfile.TemporaryDirectory() as out_dir:
+    with (
+        tempfile.TemporaryDirectory() as src_dir,
+        tempfile.TemporaryDirectory() as out_dir,
+    ):
         # create 3 script.md files
         for name in ["a.md", "b.md", "c.md"]:
             with open(os.path.join(src_dir, name), "w", encoding="utf-8") as fh:

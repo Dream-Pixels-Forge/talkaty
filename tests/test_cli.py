@@ -1,6 +1,7 @@
 """Tests for talkaty CLI."""
 
 from typer.testing import CliRunner
+
 from talkaty.cli import app
 
 
@@ -24,3 +25,10 @@ def test_personas():
     result = runner.invoke(app, ["personas"])
     assert result.exit_code == 0
     assert "talkaty voices" in result.output
+
+
+def test_preview():
+    runner = CliRunner()
+    result = runner.invoke(app, ["preview", "Hello world", "--voice", "alpha male"])
+    assert result.exit_code == 0, result.output
+    assert "Preview:" in result.output

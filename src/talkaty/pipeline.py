@@ -6,9 +6,10 @@ import os
 from dataclasses import dataclass
 
 from .audio import AudioResult, estimate_duration_ms, write_audio, write_srt
+from .backends.base import TTSBackend
 from .backends.edge_tts import EdgeTTS
 from .script import parse_brief, parse_script
-from .voices import PERSONAS, resolve_persona
+from .voices import resolve_persona
 
 
 @dataclass
@@ -29,12 +30,13 @@ async def run(opts: GenerateOptions) -> AudioResult:
     segments = parse_script(opts.script_path)
     brief = parse_brief(opts.brief_path)
 
-    # Brief-driven accent override
-    accent = opts.accent or brief.get("accent") or opts.accent or "US"
+    # Brief-driven accent override; explicit --accent wins.
+    # Default (None) keeps persona fallback (smooth female) instead of forcing US.
+    accent = opts.accent or brief.get("accent")
 
     persona = resolve_persona(opts.voice, accent, opts.backend)
 
-    backend: EdgeTTS
+    backend: TTSBackend
     if opts.backend == "edge-tts":
         backend = EdgeTTS()
     else:

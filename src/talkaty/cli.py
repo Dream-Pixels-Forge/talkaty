@@ -10,10 +10,8 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from .config import get_settings
 from .pipeline import run
-from .script import parse_script
-from .voices import list_personas, resolve_persona
+from .voices import list_personas
 
 app = typer.Typer(
     name="talkaty",
@@ -26,9 +24,21 @@ console = Console()
 def generate(
     script: Path = typer.Argument(..., help="Path to script.md"),
     brief: Path | None = typer.Option(None, "--brief", help="Optional brief/description file"),
-    voice: str = typer.Option("smooth female", "--voice", "-v", help="Persona name or voice id"),
-    accent: str = typer.Option("US", "--accent", "-a", help="Accent hint (US, UK, AU, IN, NG, ZA)"),
-    backend: str = typer.Option("edge-tts", "--backend", "-b", help="TTS backend: edge-tts or kittentts"),
+    voice: str | None = typer.Option(
+        None,
+        "--voice",
+        "-v",
+        help="Persona name (alpha male, smooth female, warm narrator, energetic, calm, nigerian narrator). If omitted, accent or default voice is used.",
+    ),
+    accent: str | None = typer.Option(
+        None,
+        "--accent",
+        "-a",
+        help="Accent hint (US, UK, AU, NG). If omitted, brief hint or default voice is used.",
+    ),
+    backend: str = typer.Option(
+        "edge-tts", "--backend", "-b", help="TTS backend: edge-tts or kittentts"
+    ),
     pitch: float = typer.Option(0.0, "--pitch", help="Pitch shift in semitones"),
     speed: float = typer.Option(1.0, "--speed", help="Speed multiplier (0.5–2.0)"),
     output: Path | None = typer.Option(None, "--output", "-o", help="Output audio path"),
@@ -46,9 +56,13 @@ def generate(
         "output_path": str(output) if output else None,
         "subtitles": subtitles,
     }
-    result = asyncio.run(run(__import__("talkaty.pipeline", fromlist=["GenerateOptions"]).GenerateOptions(**opts)))  # noqa: E501
+    result = asyncio.run(
+        run(__import__("talkaty.pipeline", fromlist=["GenerateOptions"]).GenerateOptions(**opts))
+    )
     console.print(f"[green]✓[/green] Voiceover written to {result.path}")
-    console.print(f"  voice: {result.voice_used}  backend: {result.backend_used}  duration: {result.duration_seconds:.1f}s")
+    console.print(
+        f"  voice: {result.voice_used}  backend: {result.backend_used}  duration: {result.duration_seconds:.1f}s"
+    )
 
 
 @app.command()
@@ -84,8 +98,8 @@ def preview(
     """Preview a short sample with a voice."""
     from tempfile import NamedTemporaryFile
 
-    from .pipeline import run as _run
     from .pipeline import GenerateOptions
+    from .pipeline import run as _run
 
     with NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as fh:
         fh.write(text)
@@ -129,8 +143,8 @@ def batch(
         console.print(f"[yellow]No *.md files found in {scripts_dir}[/yellow]")
         return
 
-    from .pipeline import run as _run
     from .pipeline import GenerateOptions
+    from .pipeline import run as _run
 
     for script in scripts:
         out = output_dir / (script.stem + ".mp3")

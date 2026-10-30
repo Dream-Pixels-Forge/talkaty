@@ -6,7 +6,6 @@ import asyncio
 import sys
 from typing import Any
 
-from .config import get_settings
 from .pipeline import GenerateOptions, run
 from .voices import list_personas, list_voices, resolve_persona
 
@@ -39,7 +38,7 @@ async def _call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
             "voices": [
                 {
                     "id": v.id,
-                    "name": v.name,
+                    "name": v.id,
                     "accent": v.accent,
                     "gender": v.gender,
                     "backend": v.backend,
@@ -69,7 +68,8 @@ async def _call_tool(name: str, args: dict[str, Any]) -> dict[str, Any]:
         voice = args.get("voice", "smooth female")
         backend = args.get("backend", "edge-tts")
         persona = resolve_persona(voice, None, backend)
-        import tempfile, os
+        import os
+        import tempfile
 
         with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False, encoding="utf-8") as fh:
             fh.write(text)
@@ -158,6 +158,12 @@ async def _handle_message(message: dict[str, Any]) -> dict[str, Any]:
 
     if method == "tools/call":
         tool_name = params.get("name")
+        if not isinstance(tool_name, str):
+            return {
+                "jsonrpc": "2.0",
+                "id": msg_id,
+                "error": {"code": -32602, "message": "Invalid tool name"},
+            }
         tool_args = params.get("arguments", {}) or {}
         result = await _call_tool(tool_name, tool_args)
         return {
