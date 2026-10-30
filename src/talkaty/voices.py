@@ -89,6 +89,27 @@ PERSONAS: dict[str, Persona] = {
         accent="FR",
         gender="male",
     ),
+    "hindi narrator": Persona(
+        id="hindi narrator",
+        description="Hindi storytelling voice",
+        voice_ids={"edge-tts": "hi-IN-SwaraNeural", "kittentts": "expr-voice-2-f"},
+        accent="HI",
+        gender="female",
+    ),
+    "spanish narrator": Persona(
+        id="spanish narrator",
+        description="Spanish storytelling voice",
+        voice_ids={"edge-tts": "es-ES-ElviraNeural", "kittentts": "expr-voice-2-f"},
+        accent="ES",
+        gender="female",
+    ),
+    "german narrator": Persona(
+        id="german narrator",
+        description="German storytelling voice",
+        voice_ids={"edge-tts": "de-DE-FlorianMultilingualNeural", "kittentts": "expr-voice-2-m"},
+        accent="DE",
+        gender="male",
+    ),
 }
 
 # Accent → list of persona ids that match
@@ -97,8 +118,11 @@ ACCENT_MAP: dict[str, list[str]] = {
     "UK": ["warm narrator"],
     "AU": ["calm"],
     "NG": ["nigerian narrator"],
-    "FR": ["french narrator"],
+    "FR": ["french narrator", "deep french narrator"],
     "ZH": ["chinese narrator"],
+    "HI": ["hindi narrator"],
+    "ES": ["spanish narrator"],
+    "DE": ["german narrator"],
 }
 
 

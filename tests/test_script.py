@@ -46,6 +46,9 @@ def test_parse_brief_accent():
         ("Use a French accent.", "FR"),
         ("Read in Chinese.", "ZH"),
         ("Mandarin Chinese voice please.", "ZH"),
+        ("Speak in Hindi.", "HI"),
+        ("Spanish voice please.", "ES"),
+        ("German accent preferred.", "DE"),
         ("Deep mystery documentary narrator voice.", None),
         ("No accent mentioned here.", None),
     ]

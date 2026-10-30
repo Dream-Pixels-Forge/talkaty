@@ -5,7 +5,7 @@ from talkaty.voices import PERSONAS, resolve_persona
 
 
 def test_personas_non_empty():
-    assert len(PERSONAS) == 10
+    assert len(PERSONAS) == 13
     assert "smooth female" in PERSONAS
     assert "alpha male" in PERSONAS
     assert "nigerian narrator" in PERSONAS
@@ -13,6 +13,9 @@ def test_personas_non_empty():
     assert "deep french narrator" in PERSONAS
     assert "chinese narrator" in PERSONAS
     assert "narrator" in PERSONAS
+    assert "hindi narrator" in PERSONAS
+    assert "spanish narrator" in PERSONAS
+    assert "german narrator" in PERSONAS
 
 
 def test_resolve_persona_defaults_to_smooth_female():

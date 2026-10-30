@@ -56,6 +56,30 @@ def test_pipeline_auto_accent_from_brief_chinese():
     )
 
 
+def test_pipeline_auto_accent_from_brief_hindi():
+    """Brief mentioning 'Hindi' auto-selects the Hindi voice."""
+    result = asyncio.run(_run_brief("Speak in Hindi."))
+    assert result.voice_used == "hindi narrator", (
+        f"expected hindi narrator, got {result.voice_used}"
+    )
+
+
+def test_pipeline_auto_accent_from_brief_spanish():
+    """Brief mentioning 'Spanish' auto-selects the Spanish voice."""
+    result = asyncio.run(_run_brief("Spanish voice please."))
+    assert result.voice_used == "spanish narrator", (
+        f"expected spanish narrator, got {result.voice_used}"
+    )
+
+
+def test_pipeline_auto_accent_from_brief_german():
+    """Brief mentioning 'German' auto-selects the German voice."""
+    result = asyncio.run(_run_brief("German accent preferred."))
+    assert result.voice_used == "german narrator", (
+        f"expected german narrator, got {result.voice_used}"
+    )
+
+
 def test_pipeline_explicit_narrator_voice():
     """Explicit --voice 'narrator' selects the deep mystery narrator."""
     result = asyncio.run(_run_brief(None, voice="narrator"))

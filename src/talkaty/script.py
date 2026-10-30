@@ -57,7 +57,7 @@ def _split_sentences(text: str) -> list[str]:
 
 
 def _normalize_accent(value: str) -> str | None:
-    """Normalize an accent string to a code (NG, UK, AU, US, FR, ZH) or None."""
+    """Normalize an accent string to a code (NG, UK, AU, US, FR, ZH, HI, ES, DE) or None."""
     import re
 
     lowered = value.lower()
@@ -67,6 +67,12 @@ def _normalize_accent(value: str) -> str | None:
         return "FR"
     if re.search(r"chinese|china|mandarin", lowered):
         return "ZH"
+    if re.search(r"hindi|india", lowered):
+        return "HI"
+    if re.search(r"spanish|spain|espa.ol", lowered):
+        return "ES"
+    if re.search(r"german|deutschland|deutsch", lowered):
+        return "DE"
     if re.search(r"british|\buk\b", lowered) and "nigerian" not in lowered:
         return "UK"
     if re.search(r"australian|\bau\b", lowered):
@@ -85,6 +91,9 @@ def _detect_accent(text: str) -> str | None:
         "NG": [r"nigerian"],
         "FR": [r"french", r"france"],
         "ZH": [r"chinese", r"china", r"mandarin"],
+        "HI": [r"hindi", r"india"],
+        "ES": [r"spanish", r"spain", r"espa.ol"],
+        "DE": [r"german", r"deutschland", r"deutsch"],
         "UK": [r"british", r"\buk\b"],
         "AU": [r"australian", r"\bau\b"],
         "US": [r"\bus\b", r"american"],
