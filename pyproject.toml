@@ -34,6 +34,7 @@ dependencies = [
 
 [project.optional-dependencies]
 kittentts = ["kittentts>=0.1.0"]
+piper = ["piper-tts>=1.8.0", "numpy>=1.24"]
 dev = [
     "pytest>=7.0",
     "pytest-asyncio>=0.21.0",

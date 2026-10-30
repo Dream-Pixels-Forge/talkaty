@@ -52,6 +52,11 @@ talkaty generate script.md --voice calm --pitch 1 --speed 0.8 --accent AU
 talkaty generate script.md --backend kittentts --voice "smooth female"
 ```
 
+### Offline (Piper)
+```bash
+talkaty generate script.md --backend piper --model en_US-lessac-medium.onnx
+```
+
 ### Preview (no script file needed)
 ```bash
 talkaty preview "Hello world" --voice "deep french narrator"
@@ -66,6 +71,16 @@ talkaty voices --backend kittentts
 ### Batch directory
 ```bash
 talkaty batch scripts/ out/ --voice narrator --subtitles
+```
+
+### Parallel batch (4 workers)
+```bash
+talkaty batch scripts/ out/ --voice narrator --jobs 4
+```
+
+### Parallel batch with Piper
+```bash
+talkaty batch scripts/ out/ --backend piper --model en_US-lessac-medium.onnx --jobs 2
 ```
 
 ### Custom output path

@@ -37,7 +37,10 @@ def generate(
         help="Accent hint (US, UK, AU, NG). If omitted, brief hint or default voice is used.",
     ),
     backend: str = typer.Option(
-        "edge-tts", "--backend", "-b", help="TTS backend: edge-tts or kittentts"
+        "edge-tts", "--backend", "-b", help="TTS backend: edge-tts or kittentts or piper"
+    ),
+    model: Path | None = typer.Option(
+        None, "--model", "-m", help="Piper .onnx voice model path (piper backend only)"
     ),
     pitch: float = typer.Option(0.0, "--pitch", help="Pitch shift in semitones"),
     speed: float = typer.Option(1.0, "--speed", help="Speed multiplier (0.5–2.0)"),
@@ -55,6 +58,7 @@ def generate(
         "speed": speed,
         "output_path": str(output) if output else None,
         "subtitles": subtitles,
+        "model_path": str(model) if model else None,
     }
     result = asyncio.run(
         run(__import__("talkaty.pipeline", fromlist=["GenerateOptions"]).GenerateOptions(**opts))
@@ -129,11 +133,15 @@ def batch(
     voice: str = typer.Option("smooth female", "--voice", "-v", help="Persona name"),
     accent: str = typer.Option("US", "--accent", "-a", help="Accent hint"),
     backend: str = typer.Option("edge-tts", "--backend", "-b", help="TTS backend"),
+    model: Path | None = typer.Option(
+        None, "--model", "-m", help="Piper .onnx voice model path (piper backend only)"
+    ),
     pitch: float = typer.Option(0.0, "--pitch", help="Pitch shift in semitones"),
     speed: float = typer.Option(1.0, "--speed", help="Speed multiplier"),
     subtitles: bool = typer.Option(False, "--subtitles", help="Also emit .srt files"),
+    jobs: int = typer.Option(4, "--jobs", "-j", help="Number of parallel batch jobs"),
 ) -> None:
-    """Generate voiceovers for all *.md in a directory."""
+    """Generate voiceovers for all *.md in a directory (in parallel)."""
     scripts_dir = scripts_dir.resolve()
     output_dir = output_dir.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -143,13 +151,15 @@ def batch(
         console.print(f"[yellow]No *.md files found in {scripts_dir}[/yellow]")
         return
 
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
     from .pipeline import GenerateOptions
     from .pipeline import run as _run
 
-    for script in scripts:
+    def _generate_one(script: Path) -> tuple[Path, str | None]:
         out = output_dir / (script.stem + ".mp3")
         try:
-            result = asyncio.run(
+            asyncio.run(
                 _run(
                     GenerateOptions(
                         script_path=str(script),
@@ -160,12 +170,23 @@ def batch(
                         speed=speed,
                         output_path=str(out),
                         subtitles=subtitles,
+                        model_path=str(model) if model else None,
                     )
                 )
             )
-            console.print(f"[green]✓[/green] {script.name} → {result.path}")
+            return script, None
         except Exception as exc:  # noqa: BLE001
-            console.print(f"[red]✗[/red] {script.name}: {exc}")
+            return script, str(exc)
+
+    max_workers = max(1, min(jobs, len(scripts)))
+    with ThreadPoolExecutor(max_workers=max_workers) as pool:
+        futures = {pool.submit(_generate_one, s): s for s in scripts}
+        for future in as_completed(futures):
+            script, err = future.result()
+            if err:
+                console.print(f"[red]✗[/red] {script.name}: {err}")
+            else:
+                console.print(f"[green]✓[/green] {script.name} → {script.stem}.mp3")
 
 
 def main() -> None:

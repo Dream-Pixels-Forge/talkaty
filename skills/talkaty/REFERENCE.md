@@ -124,8 +124,9 @@ Use CLI flags to fine-tune the delivery for accuracy:
 
 - `edge-tts` (default): 400+ voices, many accents, free, no API key. Requires network access to Microsoft's endpoint.
 - `kittentts`: local, offline fallback. Install with `pip install talkaty[kittentts]`. Smaller voice set (`expr-voice-2-m`, `expr-voice-2-f`).
+- `piper`: local, offline backend using `.onnx` voice models. Install with `pip install talkaty[piper]`; pass the model path via `--model`.
 
-Use `--backend kittentts` when edge-tts is unreachable or you need fully offline generation.
+Use `--backend kittentts` when edge-tts is unreachable or you need fully offline generation. Use `--backend piper --model <file.onnx>` for Piper voices.
 
 ---
 

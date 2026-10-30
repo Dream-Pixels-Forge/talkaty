@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  talkaty:
+    build: .
+    image: talkaty:latest
+    container_name: talkaty
+    volumes:
+      - ./scripts:/data/scripts:ro
+      - ./out:/data/out
+    working_dir: /data
+    entrypoint: ["talkaty"]
+    command: ["--help"]

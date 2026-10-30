@@ -56,6 +56,7 @@ talkaty batch scripts/ out/
 
 - `edge-tts` (default): 400+ voices, many accents, free, no API key
 - `kitten-tts`: local, offline fallback (`pip install talkaty[kittentts]`)
+- `piper`: local, offline backend using `.onnx` voice models (`pip install talkaty[piper]`)
 
 ## MCP
 

@@ -30,6 +30,7 @@ class GenerateOptions:
     speed: float = 1.0
     output_path: str | None = None
     subtitles: bool = False
+    model_path: str | None = None
 
 
 async def run(opts: GenerateOptions) -> AudioResult:
@@ -43,9 +44,23 @@ async def run(opts: GenerateOptions) -> AudioResult:
 
     persona = resolve_persona(opts.voice, accent, opts.backend)
 
+    piper_model_path: str | None = None
     backend: TTSBackend
     if opts.backend == "edge-tts":
         backend = EdgeTTS()
+    elif opts.backend == "piper":
+        piper_model_path = opts.model_path
+        if not piper_model_path:
+            raise ValueError("Piper backend requires --model PATH to a .onnx voice model")
+        try:
+            from .backends.piper import PiperTTS
+
+            backend = PiperTTS(model_path=piper_model_path)
+        except ImportError as exc:
+            raise RuntimeError(
+                f"Backend '{opts.backend}' unavailable. Install it with "
+                "`pip install talkaty[piper]`."
+            ) from exc
     else:
         try:
             from .backends.kittentts import KittenTTS
@@ -65,6 +80,12 @@ async def run(opts: GenerateOptions) -> AudioResult:
             cursor_ms += seg.break_ms
             continue
 
+        # Piper uses its model voice; voice_id/pitch/speed are ignored
+        if opts.backend == "piper":
+            assert piper_model_path is not None  # narrowed by ValueError above
+            tts_voice: str = piper_model_path
+        else:
+            tts_voice = persona.voice_id(opts.backend)
         # Per-segment pitch: global opts.pitch + seg.pitch (SSML <pitch>)
         seg_pitch = (opts.pitch or 0.0) + (seg.pitch or 0.0)
         # Emphasis: slight pitch boost
@@ -73,7 +94,7 @@ async def run(opts: GenerateOptions) -> AudioResult:
 
         part = await backend.synthesize(
             seg.text,
-            persona.voice_id(opts.backend),
+            tts_voice,
             pitch=_semitones_to_hz(seg_pitch),
             speed=opts.speed,
         )
