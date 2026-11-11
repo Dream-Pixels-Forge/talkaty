@@ -1,4 +1,4 @@
-# Handoff — talkaty (v1.2.0 complete)
+# Handoff — talkaty (v1.2.0 complete, backends installed)
 
 > **Project:** `talkaty` — terminal-native TTS voiceover CLI  
 > **Location:** `Dev/cli/talkaty/` (category `cli`)  
@@ -6,6 +6,7 @@
 > **Git branch:** `master`  
 > **Last commit:** `e6c52cb` — v1.2.0 subgoals 2.2 + 2.3 (Piper TTS + parallel batch + Docker)  
 > **Handoff date:** 2026-10-30  
+> **Last update:** backends installed + MCP server registered  
 
 ---
 
@@ -22,8 +23,10 @@ Turn a `script.md` (+ optional `brief.txt`) into accurate voiceover audio in any
 - [x] 13 personas across 8 accents (US, UK, AU, NG, FR, ZH, HI, ES, DE)
 - [x] SSML-lite markup (`<break>`, `<emphasis>`, `<pitch>`)
 - [x] Docker containerization (Dockerfile + docker-compose + .dockerignore)
-- [x] Piper TTS backend (local offline `.onnx` models)
+- [x] Piper TTS backend (local offline `.onnx` models) — **installed**
+- [x] kittenTTS backend (local offline fallback) — **installed**
 - [x] Parallel batch processing (`--jobs`, default 4)
+- [x] MCP stdio server registered in `.mcp.json` (project) and `.pi/agent/mcp.json` (agent)
 - [x] PyPI publishing infrastructure (CI publish job on version tags, `.pypirc.example`)
 - [x] Agent skill (`skills/talkaty/`)
 - [x] 35 tests passing; mypy/ruff/ruff-format clean
@@ -37,12 +40,15 @@ Turn a `script.md` (+ optional `brief.txt`) into accurate voiceover audio in any
 ```bash
 cd /home/dimona/Dream-Pixels-Forge/Dev/cli/talkaty
 
-# Install (edge-tts default backend)
+# Install (edge-tts default backend) — already installed
 pip install -e .
 
-# Install with optional backends
-pip install -e .[kittentts]   # kittenTTS offline fallback
-pip install -e .[piper]        # Piper .onnx voice models
+# Optional backends — already installed
+pip install -e .[kittentts]   # kittenTTS offline fallback (onnxruntime, phonemizer, soundfile)
+pip install -e .[piper]        # Piper .onnx voice models (onnxruntime, pathvalidate)
+
+# Verify backends import
+python3 -c "from talkaty.backends import edge_tts, kittentts, piper; print('OK')"
 
 # CLI
 talkaty --help
@@ -62,6 +68,8 @@ ruff format --check src/ tests/
 docker build -t talkaty:latest .
 docker run --rm -v $(pwd)/scripts:/data/scripts:ro -v $(pwd)/out:/data/out talkaty generate /data/scripts/foo.md
 ```
+
+**MCP server** (`talkaty`): registered in both MCP configs — command `python3 -m talkaty.mcp_server` (stdio). Exposes `tts_generate`, `list_voices`, `list_personas`, `preview`.
 
 ---
 
@@ -179,6 +187,9 @@ git status            # should be clean
 git log --oneline -5  # see last commit e6c52cb
 pytest -q             # 35 passing
 talkaty --help        # CLI works
+python3 -c "from talkaty.backends import edge_tts, kittentts, piper; print('backends OK')"
 ```
+
+**MCP:** `talkaty` server is registered in `.mcp.json` and `.pi/agent/mcp.json` — connect any MCP client to use `tts_generate`, `list_voices`, `list_personas`, `preview`.
 
 No in-progress branches, no uncommitted changes, no blocked items. The project is in a clean, shippable state.

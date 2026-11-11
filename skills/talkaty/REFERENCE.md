@@ -113,6 +113,7 @@ Use CLI flags to fine-tune the delivery for accuracy:
 |------|---------|---------|---------|----------|
 | Mystery documentary | narrator | -2 | 0.85 | US |
 | Deep French documentary | deep french narrator | -1 | 0.9 | FR |
+| **Deep male mystery French** | **deep french narrator** | **-0.8** | **1.1** | **FR** |
 | Energetic ad | energetic | 0 | 1.2 | US |
 | Warm narration | smooth female | 0 | 1.0 | US |
 | Authoritative | alpha male | -1 | 0.95 | US |
@@ -164,3 +165,16 @@ talkaty generate script.md --brief brief.txt --voice narrator --pitch -2 --speed
 ```
 
 Result: `script.mp3` + `script.srt` with a deep, slow, mysterious delivery.
+
+**Preset example — Cast-Sheet Explainer EP 01 (deep male mystery French):**
+
+```bash
+talkaty generate script.md \
+  --voice "deep french narrator" \
+  --pitch -0.8 \
+  --speed 1.1 \
+  --accent FR \
+  --subtitles
+```
+
+Result: `script.mp3` (~111s) + `script.srt` — deep French male narration stretched to match a ~111s video timeline.
