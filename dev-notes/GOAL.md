@@ -12,10 +12,10 @@
 
 | Subgoal | File | Version | Status |
 |---------|------|---------|--------|
-| kittenTTS backend + SRT subtitles + batch | `dev-notes/goals/GOAL-v0-2-0-kitten-tts-subtitles.md` | 0.2.0 | Completed (in code, notes stale) |
-| Brief auto-accent + preview + docs + CI | `dev-notes/goals/GOAL-v1-0-0-polish.md` | 1.0.0 | Completed (in code, notes stale) |
+| kittenTTS backend + SRT subtitles + batch | `dev-notes/goals/GOAL-v0-2-0-kitten-tts-subtitles.md` | 0.2.0 | Implemented in code — verification pending |
+| Brief auto-accent + preview + docs + CI | `dev-notes/goals/GOAL-v1-0-0-polish.md` | 1.0.0 | Implemented in code — verification pending |
 | More voices + SSML-lite + PyPI infra | `dev-notes/goals/GOAL-v1-1-0.md` | 1.1.0 | Completed |
-| Docker + Piper backend + parallel batch | `dev-notes/goals/GOAL-v1-2-0.md` | 1.2.0 | Completed |
+| Docker + Piper backend + parallel batch | `dev-notes/goals/GOAL-v1-2-0.md` | 1.2.0 | Completed (Docker build not network-tested) |
 
 > Convention: one master `GOAL.md` here; each version's detailed acceptance criteria lives in its own file under `dev-notes/goals/`.
 
@@ -53,9 +53,18 @@ All acceptance criteria met:
 
 ## Next immediate work
 
-None — all subgoals complete. The only blocker to publishing is PyPI account access (2FA + recovery codes forgotten).
+### Verification pending (code implemented, not end-to-end tested)
+
+- `talkaty generate --backend kittentts` produces playable audio
+- `talkaty generate --subtitles` produces valid `.srt`
+- `talkaty batch scripts/ out/` produces N outputs for N inputs
+- Brief accent auto-selection for NG, UK, US, FR, ZH hints
+- `talkaty preview` works without a script file
+- Docker build (`docker build -t talkaty:latest .`)
+
+### Publishing blocker (must do before publishing)
 
 1. Recover PyPI 2FA at https://pypi.org/account/recover/ or contact pypi-admin@python.org
 2. Add PyPI token to GitHub secrets (`PYPI_API_TOKEN`)
-3. Tag a release: `git tag v1.2.0 && git push origin v1.2.0`
+3. Tag a release: `git tag v1.2.1 && git push origin v1.2.1` (already done)
 4. CI builds + publishes to TestPyPI; add production PyPI publish step for the main release
