@@ -1,7 +1,7 @@
 # talkaty — GOAL.md (master)
 
 ## Meta Information
-- **Version**: 1.2.0 (release-ready)
+- **Version**: 1.2.1 (release-ready)
 - **Mode**: Existing project — v0.1.0 complete, subgoals tracked in `dev-notes/goals/`
 - **Target Repository**: `Dev/cli/talkaty/` (category `cli`)
 - **Zero-Tolerance Invariant**: `tts_generate` must produce a playable MP3/WAV from any valid `script.md` using only open-source TTS backends; zero secrets in repo; 100% CI pass rate.

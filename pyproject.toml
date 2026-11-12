@@ -4,18 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "talkaty"
-version = "1.2.0"
+version = "1.2.1"
 description = "Terminal-native TTS voiceover tool — script.md to audio in any accent, via CLI or MCP."
 readme = "README.md"
 requires-python = ">=3.12"
-license = { text = "MIT" }
+license = "MIT"
 authors = [{ name = "Dream-Pixels-Forge" }]
 keywords = ["cli", "tts", "voiceover", "mcp", "edge-tts", "kittentts"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Console",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
