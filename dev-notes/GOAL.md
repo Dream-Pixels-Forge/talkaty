@@ -1,7 +1,7 @@
 # talkaty — GOAL.md (master)
 
 ## Meta Information
-- **Version**: 0.1.0 (released scaffold) → 0.2.0 → 1.0.0
+- **Version**: 1.2.0 (release-ready)
 - **Mode**: Existing project — v0.1.0 complete, subgoals tracked in `dev-notes/goals/`
 - **Target Repository**: `Dev/cli/talkaty/` (category `cli`)
 - **Zero-Tolerance Invariant**: `tts_generate` must produce a playable MP3/WAV from any valid `script.md` using only open-source TTS backends; zero secrets in repo; 100% CI pass rate.
@@ -12,8 +12,10 @@
 
 | Subgoal | File | Version | Status |
 |---------|------|---------|--------|
-| kittenTTS backend + SRT subtitles + batch | `dev-notes/goals/GOAL-v0-2-0-kitten-tts-subtitles.md` | 0.2.0 | Not started |
-| Brief auto-accent + preview + docs + CI | `dev-notes/goals/GOAL-v1-0-0-polish.md` | 1.0.0 | Not started (deferred) |
+| kittenTTS backend + SRT subtitles + batch | `dev-notes/goals/GOAL-v0-2-0-kitten-tts-subtitles.md` | 0.2.0 | Completed (in code, notes stale) |
+| Brief auto-accent + preview + docs + CI | `dev-notes/goals/GOAL-v1-0-0-polish.md` | 1.0.0 | Completed (in code, notes stale) |
+| More voices + SSML-lite + PyPI infra | `dev-notes/goals/GOAL-v1-1-0.md` | 1.1.0 | Completed |
+| Docker + Piper backend + parallel batch | `dev-notes/goals/GOAL-v1-2-0.md` | 1.2.0 | Completed |
 
 > Convention: one master `GOAL.md` here; each version's detailed acceptance criteria lives in its own file under `dev-notes/goals/`.
 
@@ -51,14 +53,9 @@ All acceptance criteria met:
 
 ## Next immediate work
 
-Pick up **`dev-notes/goals/GOAL-v0-2-0-kitten-tts-subtitles.md`** (v0.2.0):
+None — all subgoals complete. The only blocker to publishing is PyPI account access (2FA + recovery codes forgotten).
 
-1. kittenTTS backend end-to-end (`--backend kittentts`)
-2. Validated SRT subtitle generation (`--subtitles`)
-3. `talkaty batch` directory mode
-
-Then **`dev-notes/goals/GOAL-v1-0-0-polish.md`** (v1.0.0):
-
-4. Brief-driven accent auto-selection
-5. Preview mode polish
-6. Docs + CI/CD finalization
+1. Recover PyPI 2FA at https://pypi.org/account/recover/ or contact pypi-admin@python.org
+2. Add PyPI token to GitHub secrets (`PYPI_API_TOKEN`)
+3. Tag a release: `git tag v1.2.0 && git push origin v1.2.0`
+4. CI builds + publishes to TestPyPI; add production PyPI publish step for the main release
