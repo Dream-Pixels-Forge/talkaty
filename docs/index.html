@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#101010" />
+    <meta name="description" content="talkaty — terminal-native TTS voiceover for developers. Turn scripts into spoken audio from your workflow." />
+    <title>talkaty — Terminal-native TTS</title>
+    <link rel="icon" type="image/png" href="/talkaty/public/talkaty-mark.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/talkaty/styles.css" />
+    <script src="/talkaty/main.js" defer></script>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="talkaty home">
+          <img src="/talkaty/public/talkaty-mark.png" alt="" width="38" height="38" />
+          <span>talkaty<span class="brand-period">.</span></span>
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-nav">
+          <span></span><span></span>
+        </button>
+        <nav class="nav" id="primary-nav" aria-label="Main navigation">
+          <a href="#workflow">Workflow</a>
+          <a href="#quick-start">Quick start</a>
+          <a class="nav-github" href="https://github.com/Dream-Pixels-Forge/talkaty" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+        </nav>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-line"></span> VOICEOVER, FROM YOUR TERMINAL</p>
+            <h1 id="hero-title">Words in.<br /><span>Voice out.</span></h1>
+            <p class="hero-lede">Terminal-native TTS voiceover for developers. Turn a script into sound, right where your work happens.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#quick-start">Explore the workflow <span aria-hidden="true">↓</span></a>
+              <a class="text-link" href="https://github.com/Dream-Pixels-Forge/talkaty" target="_blank" rel="noreferrer">View repository <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="hero-note"><span class="status-dot"></span><span>Built for the command line</span><span class="note-divider">/</span><span>Open source</span></div>
+          </div>
+
+          <div class="terminal-wrap" aria-label="Illustration of a script becoming an audio waveform">
+            <div class="terminal-glow"></div>
+            <div class="terminal-card">
+              <div class="terminal-topline">
+                <div class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></div>
+                <span class="terminal-title">talkaty — voice render</span>
+                <span class="terminal-live"><i></i> READY</span>
+              </div>
+              <div class="terminal-body">
+                <div class="terminal-script">
+                  <span class="line-number">01</span><span class="code-muted">$ </span><span>talkaty speak</span>
+                  <span class="line-number">02</span><span class="code-indent">script.txt</span>
+                  <span class="line-number">03</span><span class="code-comment"># rendering voiceover…</span>
+                  <span class="line-number">04</span><span class="code-success">✓ audio ready</span>
+                  <span class="line-number">05</span><span class="code-file">voiceover.wav</span>
+                </div>
+                <div class="wave-panel" aria-hidden="true">
+                  <div class="wave-label"><span>OUTPUT SIGNAL</span><span>00:08</span></div>
+                  <div class="waveform" id="hero-wave"></div>
+                  <div class="wave-axis"><span>00:00</span><span class="axis-line"></span><span>00:08</span></div>
+                </div>
+              </div>
+              <div class="terminal-foot"><span>LOCAL WORKFLOW</span><span class="foot-separator">·</span><span>TEXT → AUDIO</span><span class="terminal-caret"></span></div>
+            </div>
+            <div class="terminal-caption"><span class="caption-mark">01</span><span>From plain text to a voiceover-ready file.</span></div>
+          </div>
+        </section>
+
+        <section class="quick-start section-rule" id="quick-start" aria-labelledby="quick-title">
+          <div class="section-intro">
+            <p class="eyebrow"><span class="eyebrow-line"></span> FIRST RUN</p>
+            <h2 id="quick-title">One script.<br /><span>One command.</span></h2>
+            <p>Keep the voiceover step close to the script. Start from the command line and let your words do the talking.</p>
+          </div>
+          <div class="command-panel">
+            <div class="command-head"><span><i class="prompt-dot"></i> TERMINAL</span><span class="command-lang">SHELL</span></div>
+            <div class="command-code"><span class="command-prompt">$</span><code>talkaty speak script.txt</code><button class="copy-button" type="button" data-copy="talkaty speak script.txt" aria-label="Copy command"><span class="copy-icon" aria-hidden="true">▢</span><span class="copy-label">Copy</span></button></div>
+            <div class="command-output"><span class="output-arrow">↳</span> Turn your script into a voiceover.</div>
+            <p class="command-hint" id="copy-status" aria-live="polite">A simple starting point for a terminal-native workflow.</p>
+          </div>
+        </section>
+
+        <section class="workflow section-rule" id="workflow" aria-labelledby="workflow-title">
+          <div class="workflow-heading">
+            <div><p class="eyebrow"><span class="eyebrow-line"></span> WHY TALKATY</p><h2 id="workflow-title">Audio belongs<br />in the workflow.</h2></div>
+            <p class="workflow-summary">Move from written words to spoken output without leaving the developer tools you already use.</p>
+          </div>
+          <div class="feature-list">
+            <article class="feature-card">
+              <span class="feature-index">01 / INPUT</span>
+              <div class="feature-icon icon-terminal" aria-hidden="true"><span>›_</span></div>
+              <h3>Terminal-native</h3>
+              <p>Keep voiceover close to the scripts and tools that shape your work.</p>
+              <span class="feature-rule"></span>
+            </article>
+            <article class="feature-card">
+              <span class="feature-index">02 / TRANSFORM</span>
+              <div class="feature-icon icon-flow" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+              <h3>Script to speech</h3>
+              <p>Give written copy a voice with a direct, developer-friendly path from text to audio.</p>
+              <span class="feature-rule"></span>
+            </article>
+            <article class="feature-card">
+              <span class="feature-index">03 / OUTPUT</span>
+              <div class="feature-icon icon-wave" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+              <h3>Made for makers</h3>
+              <p>A focused TTS voiceover tool for people who would rather work in a terminal.</p>
+              <span class="feature-rule"></span>
+            </article>
+          </div>
+        </section>
+
+        <section class="closing-band">
+          <div class="closing-orbit" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <div><p class="eyebrow"><span class="eyebrow-line"></span> DREAM-PIXELS-FORGE</p><h2>Give your scripts<br />a voice.</h2></div>
+          <a class="button button-outline" href="https://github.com/Dream-Pixels-Forge/talkaty" target="_blank" rel="noreferrer">Explore talkaty on GitHub <span aria-hidden="true">↗</span></a>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <a class="footer-brand" href="#top">talkaty<span>.</span></a>
+        <p>Terminal-native TTS voiceover for developers.</p>
+        <div class="footer-meta"><span>Dream-Pixels-Forge</span><span>·</span><span>Open source</span><span>·</span><a href="https://github.com/Dream-Pixels-Forge/talkaty" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a></div>
+      </footer>
+    </div>
+  </body>
+</html>
