@@ -1,18 +1,38 @@
 # talkaty
 
+<img src="assets/talkaty-github-banner-1500x500.png" alt="talkaty banner" width="1500" height="500">
+
 Terminal-native TTS voiceover tool. Turn a `script.md` (plus optional brief) into polished voiceover audio in any accent, using open-source TTS backends. Exposes both a CLI and an MCP stdio server for coding agents.
+
+<img src="assets/talkaty-github-avatar.png" alt="talkaty avatar" width="120" height="120" align="left">
+
+[![PyPI](https://img.shields.io/pypi/v/talkaty.svg)](https://pypi.org/project/talkaty/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/)
+[![CI](https://img.shields.io/github/actions/workflow/status/Dream-Pixels-Forge/talkaty/ci.yml?branch=main)](https://github.com/Dream-Pixels-Forge/talkaty/actions/workflows/ci.yml)
+
+---
 
 ## Install
 
 ```bash
-pip install -e .              # edge-tts backend (default)
-pip install -e .[kittentts]   # add kittenTTS local offline fallback
+# Default (edge-tts backend, 400+ voices, no API key)
+pip install talkaty
+
+# With local offline fallback backends
+pip install talkaty[kittentts]
+pip install talkaty[piper]
+
+# Editable install from source
+git clone https://github.com/Dream-Pixels-Forge/talkaty.git
+cd talkaty
+pip install -e .[dev]
 ```
 
-## CLI
+## Quick start
 
 ```bash
-# Generate voiceover from a script.md (default: smooth female, US, edge-tts)
+# Generate voiceover from script.md (default: smooth female, US, edge-tts)
 talkaty generate script.md
 
 # Choose a persona and accent
@@ -24,14 +44,14 @@ talkaty generate script.md --pitch 2 --speed 1.2 --subtitles
 # Brief-driven accent auto-selection (brief mentions "Nigerian" → NG voice)
 talkaty generate script.md --brief brief.txt
 
-# List available personas/voices
-talkaty voices
-
 # Preview a short sample (no script file needed)
 talkaty preview "Hello world" --voice "alpha male"
 
 # Batch a directory of scripts
 talkaty batch scripts/ out/
+
+# List available personas/voices
+talkaty voices
 ```
 
 ## Personas
@@ -54,9 +74,11 @@ talkaty batch scripts/ out/
 
 ## Backends
 
-- `edge-tts` (default): 400+ voices, many accents, free, no API key
-- `kitten-tts`: local, offline fallback (`pip install talkaty[kittentts]`)
-- `piper`: local, offline backend using `.onnx` voice models (`pip install talkaty[piper]`)
+| Backend | Install | Notes |
+|---------|---------|-------|
+| edge-tts (default) | `pip install talkaty` | 400+ voices, many accents, free, no API key |
+| kittenTTS | `pip install talkaty[kittentts]` | Local, offline fallback |
+| piper | `pip install talkaty[piper]` | Local, offline backend using `.onnx` voice models |
 
 ## MCP
 
@@ -98,5 +120,8 @@ Hello.<break time='1s'/> <emphasis>Listen closely</emphasis> now.
 
 ## CI
 
-`mypy`, `ruff`, `ruff format`, and `pytest` run on every push/PR via GitHub Actions.
+`mypy`, `ruff`, `ruff format`, and `pytest` run on every push/PR via GitHub Actions. Releases are published to PyPI via trusted publishing on new `v*` tags.
 
+## License
+
+MIT — see [LICENSE](LICENSE).
