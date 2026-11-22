@@ -1,8 +1,8 @@
-# talkaty
-
 <div align="center">
   <img src="assets/talkaty-github-avatar.png" alt="talkaty avatar" width="120" height="120">
 </div>
+
+# talkaty
 
 <img src="assets/talkaty-github-banner-1500x500.png" alt="talkaty banner" width="1500" height="500">
 
