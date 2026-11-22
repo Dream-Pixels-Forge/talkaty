@@ -1,10 +1,12 @@
 # talkaty
 
+<div align="center">
+  <img src="assets/talkaty-github-avatar.png" alt="talkaty avatar" width="120" height="120">
+</div>
+
 <img src="assets/talkaty-github-banner-1500x500.png" alt="talkaty banner" width="1500" height="500">
 
 Terminal-native TTS voiceover tool. Turn a `script.md` (plus optional brief) into polished voiceover audio in any accent, using open-source TTS backends. Exposes both a CLI and an MCP stdio server for coding agents.
-
-<img src="assets/talkaty-github-avatar.png" alt="talkaty avatar" width="120" height="120" align="left">
 
 [![PyPI](https://img.shields.io/pypi/v/talkaty.svg)](https://pypi.org/project/talkaty/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
